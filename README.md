@@ -11,11 +11,11 @@ Tech Stack
 
 Git-Flow & Rules
 To ensure code quality and stability, we follow these mandatory rules:
--Main Branch: Stable production-ready code.
--Develop Branch: Integration branch for all features.
--Feature Branches: Every task must be developed on a separate feature/<task-name> branch.
--Pull Requests: No direct pushes to main or develop. Use Pull Requests only.
--Code Review: At least one peer review is required before merging any PR.
+- Main Branch: Stable production-ready code.
+- Develop Branch: Integration branch for all features.
+- Feature Branches: Every task must be developed on a separate feature/<task-name> branch.
+- Pull Requests: No direct pushes to main or develop. Use Pull Requests only.
+- Code Review: At least one peer review is required before merging any PR.
 
 Core Features
 1. User Management: Registration, login, and profile editing with Roles (Customer, Admin).
@@ -24,6 +24,6 @@ Core Features
 4. Availability Search: Search and filter free rooms by date range, type, or capacity.
 
 Project Timeline
--Week 1: Setup, Planning, API design, DB modeling, and Authentication.
--Week 2: Core Development (Booking logic, Search, Swagger documentation).
--Week 3: Finalization (Bug fixes, Readme, and Git history cleanup).
+- Week 1: Setup, Planning, API design, DB modeling, and Authentication.
+- Week 2: Core Development (Booking logic, Search, Swagger documentation).
+- Week 3: Finalization (Bug fixes, Readme, and Git history cleanup).
