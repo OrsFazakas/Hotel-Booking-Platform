@@ -4,10 +4,10 @@ Project Overview
 This is a 3-week team project focused on building a Java + Spring Boot backend for a hotel booking platform. The goal is to simulate real-world development practices, including REST API design, relational database management, and collaborative Git-flow.
 
 Tech Stack
--Backend: Java + Spring Boot 
--Database: Relational (PostgreSQL or MySQL) 
--Documentation: Swagger and/or Postman 
--Security: Basic or JWT Authentication
+- Backend: Java + Spring Boot 
+- Database: Relational (PostgreSQL or MySQL) 
+- Documentation: Swagger and/or Postman 
+- Security: Basic or JWT Authentication
 
 Git-Flow & Rules
 To ensure code quality and stability, we follow these mandatory rules:
