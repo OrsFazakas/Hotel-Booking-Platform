@@ -62,8 +62,8 @@ public class UserService implements IUserService {
     @Override
     public void updateUserName(String firstName, String lastName, String email) {
         User userToUpdate = getUserByEmail(email);
-        userToUpdate.setFirst_name(firstName);
-        userToUpdate.setLast_name(lastName);
+        userToUpdate.setFirstName(firstName);
+        userToUpdate.setLastName(lastName);
         userRepository.save(userToUpdate);
     }
 }
