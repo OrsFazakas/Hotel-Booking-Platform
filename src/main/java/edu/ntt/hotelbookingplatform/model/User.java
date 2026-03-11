@@ -1,19 +1,32 @@
 package edu.ntt.hotelbookingplatform.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
 @Entity
-@Table
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
     private Long userId;
+
+    @Setter
     private String email;
+
+    @Setter
     private String password;
+
+    @Setter
     private String firstName;
+
+    @Setter
     private String lastName;
+
+    @Setter
     private String role;
 
     public User(String email, String password, String first_name, String last_name, String role) {
@@ -28,43 +41,5 @@ public class User {
 
     }
 
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String first_name) {
-        this.firstName = first_name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String last_name) {
-        this.lastName = last_name;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 }
