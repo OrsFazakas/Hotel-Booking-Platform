@@ -1,15 +1,14 @@
 package edu.ntt.hotelbookingplatform.service.interfaces;
 
-import edu.ntt.hotelbookingplatform.model.User;
+import edu.ntt.hotelbookingplatform.model.Users;
 
 import java.util.List;
 
 public interface IUserService {
-    List<User> getAllUsers();
-    User getUserByEmail(String email);
-    void createUser(User user);
+    List<Users> getAllUsers();
+    Users getUserByEmail(String email);
+    void createUser(Users user);
     void deleteUser(String email);
     void updateUserRole(String userEmail, String newRole);
-    void changePassword(String oldPassword, String newPassword, String email);
-    void updateUserName(String firstName, String lastName, String email);
+
 }

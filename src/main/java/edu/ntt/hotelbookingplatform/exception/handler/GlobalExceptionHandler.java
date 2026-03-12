@@ -3,6 +3,7 @@ package edu.ntt.hotelbookingplatform.exception.handler;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,5 +35,11 @@ public class GlobalExceptionHandler {
             errors.put(field, violation.getMessage());
         }
         return errors;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Map<String, String> handleAccessDenied() {
+        return Map.of("error", "Access denied: insufficient permissions!");
     }
 }
