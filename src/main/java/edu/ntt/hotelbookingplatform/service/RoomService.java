@@ -39,6 +39,11 @@ public class RoomService {
         Room existingRoom = roomRepository.findById(id)
                 .orElseThrow(() -> new RoomNotFoundException(id));
 
+        if(!existingRoom.getRoomNumber().equals(room.getRoomNumber()) &&
+                roomRepository.existsByRoomNumber(room.getRoomNumber())) {
+            throw new RoomAlreadyExistsException(room.getRoomNumber());
+        }
+
         existingRoom.setRoomNumber(room.getRoomNumber());
         existingRoom.setType(room.getType());
         existingRoom.setCapacity(room.getCapacity());

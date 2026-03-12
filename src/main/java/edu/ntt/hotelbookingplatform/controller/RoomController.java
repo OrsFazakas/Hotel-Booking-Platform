@@ -1,46 +1,61 @@
 package edu.ntt.hotelbookingplatform.controller;
 
-import edu.ntt.hotelbookingplatform.model.Room;
+import edu.ntt.hotelbookingplatform.dto.in.RoomCreationDTO;
+import edu.ntt.hotelbookingplatform.dto.mapper.RoomMapper;
+import edu.ntt.hotelbookingplatform.dto.out.RoomDTO;
 import edu.ntt.hotelbookingplatform.service.RoomService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rooms")
-@RequiredArgsConstructor
+@RequestMapping("/api/rooms/")
+@Validated
 public class RoomController {
 
     private final RoomService roomService;
+    private final RoomMapper roomMapper;
 
-    @GetMapping
-    public ResponseEntity<List<Room>> getRooms() {
-        return ResponseEntity.ok(roomService.getAllRooms());
+    @Autowired
+    public RoomController(RoomService roomService, RoomMapper roomMapper) {
+        this.roomService = roomService;
+        this.roomMapper = roomMapper;
+    }
+
+    @GetMapping()
+    public List<RoomDTO> getRooms(){
+        return roomService.getAllRooms()
+                .stream()
+                .map(roomMapper::toDto)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Room> getRoom(@PathVariable Long id) {
-        return ResponseEntity.ok(roomService.getRoomById(id));
+    public RoomDTO getRoom(@PathVariable Long id){
+        return roomMapper.toDto(roomService.getRoomById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room) {
-        Room createdRoom = roomService.createRoom(room);
-        return ResponseEntity.status(201).body(createdRoom);
+    @PostMapping()
+    public String createRoom(@Valid @RequestBody RoomCreationDTO roomCreationDTO){
+        roomService.createRoom(roomMapper.toRoom(roomCreationDTO));
+        return "Room created successfully!";
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Room> updateRoom(@PathVariable Long id, @Valid @RequestBody Room room) {
-        return ResponseEntity.ok(roomService.updateRoom(id, room));
+    public String updateRoom(
+            @PathVariable Long id,
+            @Valid @RequestBody RoomCreationDTO roomCreationDTO){
+
+        roomService.updateRoom(id, roomMapper.toRoom(roomCreationDTO));
+        return "Room updated successfully!";
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
+    public String deleteRoom(@PathVariable Long id){
         roomService.deleteRoom(id);
-        return ResponseEntity.noContent().build();
+        return "Room deleted successfully!";
     }
 }
-

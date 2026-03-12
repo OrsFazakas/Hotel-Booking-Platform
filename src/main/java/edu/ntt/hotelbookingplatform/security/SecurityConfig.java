@@ -1,4 +1,4 @@
-package edu.ntt.hotelbookingplatform.config;
+package edu.ntt.hotelbookingplatform.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
