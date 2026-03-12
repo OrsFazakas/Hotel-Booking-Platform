@@ -1,91 +1,35 @@
 package edu.ntt.hotelbookingplatform.model;
 
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name= "rooms")
+@Table(name = "rooms")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String roomNumber;
+
+    @Column(nullable = false)
     private String type;
+
+    @Column(nullable = false)
     private int capacity;
+
+    @Column(nullable = false)
     private double pricePerNight;
+
     private String features;
-
-    public Room() {}
-
-    public Room(Long id, String roomNumber, String type, int capacity, double pricePerNight, String features) {
-        this.id = id;
-        this.roomNumber = roomNumber;
-        this.type = type;
-        this.capacity = capacity;
-        this.pricePerNight = pricePerNight;
-        this.features = features;
-    }
-
-
-    public Room(String roomNumber, String type, int capacity, double pricePerNight, String features) {
-        this.roomNumber = roomNumber;
-        this.type = type;
-        this.capacity = capacity;
-        this.pricePerNight = pricePerNight;
-        this.features = features;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public double getPricePerNight() {
-        return pricePerNight;
-    }
-
-    public void setPricePerNight(double pricePerNight) {
-        this.pricePerNight = pricePerNight;
-    }
-
-    public String getFeatures() {
-        return features;
-    }
-
-    public void setFeatures(String features) {
-        this.features = features;
-    }
-
-
-
 }
+
