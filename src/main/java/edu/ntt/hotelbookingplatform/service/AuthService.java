@@ -1,6 +1,6 @@
 package edu.ntt.hotelbookingplatform.service;
 
-import edu.ntt.hotelbookingplatform.exception.UserWrongPasswordException;
+import edu.ntt.hotelbookingplatform.exception.user.UserWrongPasswordException;
 import edu.ntt.hotelbookingplatform.model.Users;
 import edu.ntt.hotelbookingplatform.service.interfaces.IAuthService;
 import edu.ntt.hotelbookingplatform.service.interfaces.IJWTService;

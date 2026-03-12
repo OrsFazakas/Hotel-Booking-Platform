@@ -1,6 +1,6 @@
-package edu.ntt.hotelbookingplatform.exception.advice;
+package edu.ntt.hotelbookingplatform.exception.advice.user;
 
-import edu.ntt.hotelbookingplatform.exception.UserWrongPasswordException;
+import edu.ntt.hotelbookingplatform.exception.user.UserWrongPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

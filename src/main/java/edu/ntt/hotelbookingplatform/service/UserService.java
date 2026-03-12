@@ -1,8 +1,8 @@
 package edu.ntt.hotelbookingplatform.service;
 
-import edu.ntt.hotelbookingplatform.exception.UserAlreadyExistsException;
-import edu.ntt.hotelbookingplatform.exception.UserNotFoundException;
-import edu.ntt.hotelbookingplatform.exception.UserWrongPasswordException;
+import edu.ntt.hotelbookingplatform.exception.user.UserAlreadyExistsException;
+import edu.ntt.hotelbookingplatform.exception.user.UserNotFoundException;
+import edu.ntt.hotelbookingplatform.exception.user.UserWrongPasswordException;
 import edu.ntt.hotelbookingplatform.model.Users;
 import edu.ntt.hotelbookingplatform.repository.UserRepository;
 import edu.ntt.hotelbookingplatform.service.interfaces.IUserService;
