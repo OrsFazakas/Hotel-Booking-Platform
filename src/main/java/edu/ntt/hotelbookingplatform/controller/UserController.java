@@ -1,5 +1,7 @@
 package edu.ntt.hotelbookingplatform.controller;
 
+import edu.ntt.hotelbookingplatform.dto.in.ChangeNameDTO;
+import edu.ntt.hotelbookingplatform.dto.in.ChangePasswordDTO;
 import edu.ntt.hotelbookingplatform.dto.in.ChangeRoleDTO;
 import edu.ntt.hotelbookingplatform.dto.in.UserCreationDTO;
 import edu.ntt.hotelbookingplatform.dto.mapper.UserMapper;
@@ -9,6 +11,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +51,18 @@ public class UserController {
     public ResponseEntity<String> changeUserRole(@Valid @RequestBody ChangeRoleDTO changeRoleDTO){
         userService.updateUserRole(changeRoleDTO.getEmail(), changeRoleDTO.getRole());
         return ResponseEntity.ok("User role changed successfully!");
+    }
+
+    @PatchMapping("/changeName")
+    public ResponseEntity<String> changeUserName(@Valid @RequestBody ChangeNameDTO changeNameDTO, @AuthenticationPrincipal String currentUserEmail){
+        userService.updateUserName(currentUserEmail, changeNameDTO.getFirstName(), changeNameDTO.getLastName());
+        return ResponseEntity.ok("User name changed successfully!");
+    }
+
+    @PatchMapping("/changePassword")
+    public ResponseEntity<String> changeUserPassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO, @AuthenticationPrincipal String currentUserEmail){
+        userService.updateUserPassword(currentUserEmail, changePasswordDTO.getOldPassword(), changePasswordDTO.getNewPassword());
+        return ResponseEntity.ok("User password changed successfully!");
     }
 
     @DeleteMapping("/{email}")

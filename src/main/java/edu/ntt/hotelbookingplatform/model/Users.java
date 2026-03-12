@@ -2,9 +2,12 @@ package edu.ntt.hotelbookingplatform.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name="users")
 public class Users {
@@ -13,20 +16,10 @@ public class Users {
             strategy = GenerationType.IDENTITY
     )
     private Long userId;
-
-    @Setter
     private String email;
-
-    @Setter
     private String password;
-
-    @Setter
     private String firstName;
-
-    @Setter
     private String lastName;
-
-    @Setter
     private String role;
 
     public Users(String email, String password, String first_name, String last_name, String role) {
@@ -36,10 +29,4 @@ public class Users {
         this.lastName = last_name;
         this.role = role;
     }
-
-    public Users() {
-
-    }
-
-
 }

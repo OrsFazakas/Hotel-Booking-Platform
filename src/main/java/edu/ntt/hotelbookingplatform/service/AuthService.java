@@ -3,23 +3,19 @@ package edu.ntt.hotelbookingplatform.service;
 import edu.ntt.hotelbookingplatform.exception.UserWrongPasswordException;
 import edu.ntt.hotelbookingplatform.model.Users;
 import edu.ntt.hotelbookingplatform.service.interfaces.IAuthService;
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.ntt.hotelbookingplatform.service.interfaces.IJWTService;
+import edu.ntt.hotelbookingplatform.service.interfaces.IUserService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class AuthService implements IAuthService {
 
-    private final UserService userService;
+    private final IUserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final JWTService jwtService;
-
-    @Autowired
-    public AuthService(UserService userService, BCryptPasswordEncoder passwordEncoder, JWTService jwtService) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-    }
+    private final IJWTService jwtService;
 
     @Override
     public String login(String email, String password) {
