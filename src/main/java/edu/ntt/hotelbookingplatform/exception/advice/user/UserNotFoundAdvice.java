@@ -1,6 +1,6 @@
-package edu.ntt.hotelbookingplatform.exception.advice;
+package edu.ntt.hotelbookingplatform.exception.advice.user;
 
-import edu.ntt.hotelbookingplatform.exception.UserNotFoundException;
+import edu.ntt.hotelbookingplatform.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
