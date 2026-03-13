@@ -34,7 +34,7 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalArgumentException("Check-in date must be before check-out date");
         }
 
-        User user = userRepository.findById(userId)
+        Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
 
         Room room = roomRepository.findById(request.roomId())
@@ -51,7 +51,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         long nights = ChronoUnit.DAYS.between(request.checkInDate(), request.checkOutDate());
-        BigDecimal totalPrice = room.getPricePerNight().multiply(BigDecimal.valueOf(nights));
+        BigDecimal totalPrice = BigDecimal.valueOf(room.getPricePerNight()).multiply(BigDecimal.valueOf(nights));
 
         Booking booking = Booking.builder()
                 .user(user)
