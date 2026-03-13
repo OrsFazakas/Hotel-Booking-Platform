@@ -6,11 +6,13 @@ import edu.ntt.hotelbookingplatform.dto.mapper.UserMapper;
 import edu.ntt.hotelbookingplatform.service.AuthService;
 import edu.ntt.hotelbookingplatform.service.UserService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/api/auth/")
 @Validated
