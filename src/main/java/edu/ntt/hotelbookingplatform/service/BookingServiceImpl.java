@@ -6,7 +6,7 @@ import edu.ntt.hotelbookingplatform.exception.ResourceNotFoundException;
 import edu.ntt.hotelbookingplatform.exception.RoomNotAvailableException;
 import edu.ntt.hotelbookingplatform.model.Booking;
 import edu.ntt.hotelbookingplatform.model.Room;
-import edu.ntt.hotelbookingplatform.model.User;
+import edu.ntt.hotelbookingplatform.model.Users;
 import edu.ntt.hotelbookingplatform.repository.BookingRepository;
 import edu.ntt.hotelbookingplatform.repository.RoomRepository;
 import edu.ntt.hotelbookingplatform.repository.UserRepository;
