@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -63,4 +64,16 @@ public class BookingController {
     public ResponseEntity<List<BookingResponseDTO>> getUpcomingBookings() {
         return ResponseEntity.ok(bookingService.getUpcomingBookings());
     }
+
+    @GetMapping("/availability")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
+    @Operation(summary = "Check if a room is available for a date range")
+    public ResponseEntity<Boolean> checkAvailability(
+            @RequestParam Long roomId,
+            @RequestParam LocalDate checkIn,
+            @RequestParam LocalDate checkOut
+    ) {
+        return ResponseEntity.ok(bookingService.isRoomAvailable(roomId, checkIn, checkOut));
+    }
+
 }

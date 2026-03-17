@@ -4,6 +4,7 @@ import edu.ntt.hotelbookingplatform.dto.in.BookingRequestDTO;
 import edu.ntt.hotelbookingplatform.dto.out.BookingResponseDTO;
 
 import java.util.List;
+import java.time.LocalDate;
 
 public interface BookingService {
 
@@ -16,4 +17,6 @@ public interface BookingService {
     BookingResponseDTO getBookingById(Long bookingId);
 
     List<BookingResponseDTO> getUpcomingBookings();
+
+    boolean isRoomAvailable(Long roomId, LocalDate checkIn, LocalDate checkOut);
 }
