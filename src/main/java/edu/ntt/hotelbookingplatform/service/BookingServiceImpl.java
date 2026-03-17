@@ -109,4 +109,15 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found: " + bookingId));
     }
+
+    @Override
+    public boolean isRoomAvailable(Long roomId, LocalDate checkIn, LocalDate checkOut) {
+        if (!checkIn.isBefore(checkOut)) {
+            throw new IllegalArgumentException("Check-in date must be before check-out date");
+        }
+        if (!roomRepository.existsById(roomId)) {
+            throw new ResourceNotFoundException("Room not found: " + roomId);
+        }
+        return !bookingRepository.existsOverlappingBooking(roomId, checkIn, checkOut);
+    }
 }
