@@ -7,6 +7,8 @@ import edu.ntt.hotelbookingplatform.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,10 +18,12 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
+    @Transactional(readOnly = true)
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Room getRoomById(Long id) {
         return roomRepository.findById(id)
                 .orElseThrow(() -> new RoomNotFoundException(id));
@@ -59,5 +63,14 @@ public class RoomService {
             throw new RoomNotFoundException(id);
         }
         roomRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Room> getAvailableRooms(LocalDate checkIn, LocalDate checkOut, Integer capacity, String type) {
+        if (!checkIn.isBefore(checkOut)) {
+            throw new IllegalArgumentException("Check-in date must be before check-out date");
+        }
+
+        return roomRepository.findAvailableRoomsFiltered(checkIn, checkOut, capacity, type);
     }
 }

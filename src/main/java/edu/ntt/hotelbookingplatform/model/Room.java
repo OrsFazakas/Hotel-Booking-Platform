@@ -3,6 +3,8 @@ package edu.ntt.hotelbookingplatform.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "rooms")
 @Getter
@@ -26,7 +28,7 @@ public class Room {
     private int capacity;
 
     @Column(nullable = false)
-    private double pricePerNight;
+    private BigDecimal pricePerNight;
 
     private String features;
 }

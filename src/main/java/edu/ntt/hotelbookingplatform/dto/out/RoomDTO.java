@@ -4,6 +4,8 @@ package edu.ntt.hotelbookingplatform.dto.out;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 public class RoomDTO {
@@ -11,7 +13,7 @@ public class RoomDTO {
     private String roomNumber;
     private String type;
     private int capacity;
-    private double pricePerNight;
+    private BigDecimal pricePerNight;
     private String features;
 
 

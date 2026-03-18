@@ -7,12 +7,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -43,6 +47,14 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.cancelBooking(id, userId));
     }
 
+    @GetMapping("/arrivals")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "List all confirmed arrivals for a specific date")
+    public ResponseEntity<List<BookingResponseDTO>> getArrivals(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(bookingService.getArrivals(date));
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
     @Operation(summary = "Get a booking by ID")
@@ -52,8 +64,14 @@ public class BookingController {
 
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
-    @Operation(summary = "Get all bookings for a user")
-    public ResponseEntity<List<BookingResponseDTO>> getBookingsByUser(@PathVariable Long userId) {
+    @Operation(summary = "Get bookings for a user (optional filter by status)")
+    public ResponseEntity<List<BookingResponseDTO>> getBookingsByUser(
+            @PathVariable Long userId,
+            @RequestParam(required = false) String status) {
+
+        if (status != null && !status.isEmpty()) {
+            return ResponseEntity.ok(bookingService.getBookingsByUserAndStatus(userId, status));
+        }
         return ResponseEntity.ok(bookingService.getBookingsByUser(userId));
     }
 
@@ -62,5 +80,23 @@ public class BookingController {
     @Operation(summary = "List all upcoming bookings (Admin only)")
     public ResponseEntity<List<BookingResponseDTO>> getUpcomingBookings() {
         return ResponseEntity.ok(bookingService.getUpcomingBookings());
+    }
+
+    @GetMapping("/statistics/revenue")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Calculate total revenue for a period")
+    public ResponseEntity<BigDecimal> getRevenue(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
+        return ResponseEntity.ok(bookingService.getRevenue(start, end));
+    }
+
+    @GetMapping("/statistics/occupancy")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get occupancy rate for a period")
+    public ResponseEntity<Map<String, Object>> getOccupancy(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
+        return ResponseEntity.ok(bookingService.getOccupancyReport(start, end));
     }
 }
