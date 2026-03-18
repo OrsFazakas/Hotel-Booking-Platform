@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
 
 public interface BookingService {
 
@@ -27,4 +28,5 @@ public interface BookingService {
 
     Map<String, Object> getOccupancyReport(LocalDate start, LocalDate end);
 
+    boolean isRoomAvailable(Long roomId, LocalDate checkIn, LocalDate checkOut);
 }

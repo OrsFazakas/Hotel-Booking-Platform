@@ -19,7 +19,7 @@ public record BookingResponseDTO(
     public static BookingResponseDTO from(Booking booking) {
         return new BookingResponseDTO(
                 booking.getId(),
-                booking.getUser().getId(),
+                booking.getUser().getUserId(),
                 booking.getUser().getEmail(),
                 booking.getRoom().getId(),
                 booking.getRoom().getRoomNumber(),

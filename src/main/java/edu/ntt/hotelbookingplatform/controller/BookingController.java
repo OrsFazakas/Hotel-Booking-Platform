@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -99,4 +100,15 @@ public class BookingController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
         return ResponseEntity.ok(bookingService.getOccupancyReport(start, end));
     }
+    @GetMapping("/availability")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
+    @Operation(summary = "Check if a room is available for a date range")
+    public ResponseEntity<Boolean> checkAvailability(
+            @RequestParam Long roomId,
+            @RequestParam LocalDate checkIn,
+            @RequestParam LocalDate checkOut
+    ) {
+        return ResponseEntity.ok(bookingService.isRoomAvailable(roomId, checkIn, checkOut));
+    }
+
 }
