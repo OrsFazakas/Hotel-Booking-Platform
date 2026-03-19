@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,6 +15,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByUserId(Long userId);
 
+    List<Booking> findByUserIdAndStatus(Long userId, Booking.BookingStatus status);
+
     @Query("""
         SELECT b FROM Booking b
         WHERE b.checkInDate >= :today
@@ -21,6 +24,9 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
         ORDER BY b.checkInDate ASC
     """)
     List<Booking> findUpcomingBookings(@Param("today") LocalDate today);
+
+    @Query("SELECT b FROM Booking b WHERE b.checkInDate = :date AND b.status = 'CONFIRMED'")
+    List<Booking> findArrivalsByDate(@Param("date") LocalDate date);
 
     @Query("""
         SELECT COUNT(b) > 0 FROM Booking b
@@ -34,6 +40,20 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("checkIn") LocalDate checkIn,
             @Param("checkOut") LocalDate checkOut
     );
+
+    @Query("" +
+            "SELECT SUM(b.totalPrice) FROM Booking b " +
+            "WHERE b.status = 'CONFIRMED' " +
+            "AND b.checkInDate " +
+            "BETWEEN :start AND :end")
+    BigDecimal calculateRevenue(@Param("start") LocalDate start, @Param("end") LocalDate end);
+
+    @Query("SELECT COUNT(DISTINCT b.room.id) " +
+            "FROM Booking b " +
+            "WHERE b.status = 'CONFIRMED' " +
+            "AND b.checkInDate < :end " +
+            "AND b.checkOutDate > :start")
+    long countOccupiedRooms(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
     @Query("""
         SELECT COUNT(b) > 0 FROM Booking b

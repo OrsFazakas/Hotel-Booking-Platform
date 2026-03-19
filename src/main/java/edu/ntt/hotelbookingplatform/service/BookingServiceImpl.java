@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +52,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         long nights = ChronoUnit.DAYS.between(request.checkInDate(), request.checkOutDate());
-        BigDecimal totalPrice = BigDecimal.valueOf(room.getPricePerNight()).multiply(BigDecimal.valueOf(nights));
+        BigDecimal totalPrice = room.getPricePerNight().multiply(BigDecimal.valueOf(nights));
 
         Booking booking = Booking.builder()
                 .user(user)
@@ -70,12 +71,30 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponseDTO cancelBooking(Long bookingId, Long requestingUserId) {
         Booking booking = findBookingOrThrow(bookingId);
 
+        Users requestingUser = userRepository.findById(requestingUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + requestingUserId));
+
+        boolean isOwner = booking.getUser().getId().equals(requestingUserId);
+        boolean isAdmin = requestingUser.getRole().equalsIgnoreCase("ADMIN");
+
+        if (!isOwner && !isAdmin) {
+            throw new org.springframework.security.access.AccessDeniedException("You don't have permission to cancel this booking");
+        }
+
         if (booking.getStatus() == Booking.BookingStatus.CANCELLED) {
             throw new IllegalStateException("Booking is already cancelled");
         }
 
         booking.setStatus(Booking.BookingStatus.CANCELLED);
         return BookingResponseDTO.from(bookingRepository.save(booking));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookingResponseDTO> getBookingsByUserAndStatus(Long userId, String status) {
+        Booking.BookingStatus bStatus = Booking.BookingStatus.valueOf(status.toUpperCase());
+        return bookingRepository.findByUserIdAndStatus(userId, bStatus)
+                .stream().map(BookingResponseDTO::from).toList();
     }
 
     @Override
@@ -88,6 +107,33 @@ public class BookingServiceImpl implements BookingService {
                 .stream()
                 .map(BookingResponseDTO::from)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BigDecimal getRevenue(LocalDate start, LocalDate end) {
+        BigDecimal revenue = bookingRepository.calculateRevenue(start, end);
+        return revenue != null ? revenue : BigDecimal.ZERO;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Object> getOccupancyReport(LocalDate start, LocalDate end) {
+        long totalRooms = roomRepository.count();
+        long occupiedRooms = bookingRepository.countOccupiedRooms(start, end);
+        double rate = totalRooms > 0 ? (double) occupiedRooms / totalRooms * 100 : 0;
+
+        return Map.of(
+                "occupancyRate", String.format("%.2f%%", rate),
+                "occupiedRooms", occupiedRooms,
+                "totalRooms", totalRooms
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookingResponseDTO> getArrivals(LocalDate date) {
+        return bookingRepository.findArrivalsByDate(date).stream().map(BookingResponseDTO::from).toList();
     }
 
     @Override
@@ -109,6 +155,7 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found: " + bookingId));
     }
+
 
     @Override
     public boolean isRoomAvailable(Long roomId, LocalDate checkIn, LocalDate checkOut) {

@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 public class RoomCreationDTO {
@@ -25,7 +27,7 @@ public class RoomCreationDTO {
     private int capacity;
 
     @Positive(message = "Price per night must be a positive value!")
-    private double pricePerNight;
+    private BigDecimal pricePerNight;
 
     @NotBlank(message = "Features field must not be blank!")
     private String features;
