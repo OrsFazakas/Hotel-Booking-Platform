@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | LuxeStays</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-top: 6rem;
+            min-height: 70vh;
+            padding-bottom: 5rem;
+        }
+
+        .sidebar {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            height: fit-content;
+            backdrop-filter: blur(12px);
+        }
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+        }
+
+        .menu-list {
+            list-style: none;
+        }
+
+        .menu-list li {
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .menu-list li:hover,
+        .menu-list li.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .menu-list li.active ion-icon {
+            color: var(--accent-primary);
+        }
+
+        .content-area {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .booking-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .booking-card:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .booking-details h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .booking-meta {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge.confirmed {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .badge.cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        @media (max-width: 900px) {
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .booking-actions {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar align-center">
+        <div class="logo">
+            <ion-icon name="bed"></ion-icon>
+            <h2>LuxeStays</h2>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html">Destinations</a>
+        </div>
+        <div class="auth-buttons">
+            <!-- Populated via api.js -->
+        </div>
+    </nav>
+
+    <div class="container profile-layout">
+        <aside class="sidebar">
+            <div class="user-info">
+                <div class="avatar" id="userInitial">L</div>
+                <h2 id="userName" style="margin-bottom:0.2rem">Loading...</h2>
+                <p id="userEmail" style="color:var(--text-secondary); font-size:0.9rem;">user@example.com</p>
+                <div id="roleBadge"
+                    style="margin-top:0.5rem; font-size:0.8rem; color:var(--accent-secondary); font-weight:600;"></div>
+            </div>
+            <ul class="menu-list">
+                <li class="active" onclick="switchTab('bookings', this)"><ion-icon name="calendar-outline"></ion-icon>
+                    My Bookings</li>
+                <li onclick="switchTab('favorites', this)"><ion-icon name="heart-outline"></ion-icon> My Favorites</li>
+                <li onclick="alert('Profile editing simulation')"><ion-icon name="person-outline"></ion-icon> Edit
+                    Profile</li>
+                <li onclick="alert('Payment methods simulation')"><ion-icon name="card-outline"></ion-icon> Payment
+                    Methods</li>
+                <li onclick="window.api.logout()"><ion-icon name="log-out-outline"></ion-icon> Log Out</li>
+            </ul>
+        </aside>
+
+        <main class="content-area">
+            <h2 id="tabTitle" style="margin-bottom: 2rem; font-size: 1.8rem;">My Bookings</h2>
+
+            <div id="loadingIndicator" style="text-align:center; padding:2rem; color:var(--text-secondary);">
+                Fetching your data...
+            </div>
+
+            <div id="bookingsContainer">
+                <!-- Bookings injected here -->
+            </div>
+
+            <div id="favoritesContainer" class="property-grid" style="display:none;">
+                <!-- Favorites injected here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!window.api.requireAuth()) return;
+
+            const user = window.api.getCurrentUser();
+
+            // Populate Sidebar
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userEmail').textContent = user.sub;
+            document.getElementById('userInitial').textContent = user.name.charAt(0).toUpperCase();
+            if (user.role === 'ADMIN') document.getElementById('roleBadge').textContent = 'ADMINISTRATOR';
+
+            // Load Bookings
+            await loadBookings();
+        });
+
+        async function loadBookings() {
+            const container = document.getElementById('bookingsContainer');
+            const loader = document.getElementById('loadingIndicator');
+
+            try {
+                const bookings = await window.api.getUserBookings();
+                const rooms = await window.api.getRooms(); // We need room names
+
+                loader.style.display = 'none';
+
+                if (bookings.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:3rem; background:rgba(0,0,0,0.2); border-radius:16px; border:1px dashed var(--glass-border);">
+                            <ion-icon name="airplane-outline" style="font-size:3rem; color:var(--text-secondary); margin-bottom:1rem;"></ion-icon>
+                            <h3>No bookings yet</h3>
+                            <p style="color:var(--text-secondary); margin-top:0.5rem; margin-bottom:1.5rem;">Time to plan your next getaway!</p>
+                            <button class="btn-primary" onclick="window.location.href='index.html'">Explore Stays</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '';
+
+                // Sort by newest first
+                bookings.sort((a, b) => b.id - a.id).forEach(booking => {
+                    const room = rooms.find(r => r.id == booking.roomId);
+                    const isCancelled = booking.status === 'CANCELLED';
+                    const ci = new Date(booking.checkIn).toLocaleDateString();
+                    const co = new Date(booking.checkOut).toLocaleDateString();
+
+                    container.innerHTML += `
+                        <div class="booking-card">
+                            <div class="booking-details">
+                                <h3>${room ? room.title : 'Unknown Room'}</h3>
+                                <div class="booking-meta">
+                                    <span><ion-icon name="calendar-clear-outline"></ion-icon> ${ci} - ${co}</span>
+                                    <span><ion-icon name="people-outline"></ion-icon> ${booking.guests} Guests</span>
+                                    <span><ion-icon name="cash-outline"></ion-icon> Booking #${booking.id}</span>
+                                </div>
+                            </div>
+                            <div class="booking-actions">
+                                <span class="badge ${isCancelled ? 'cancelled' : 'confirmed'}">${booking.status}</span>
+                                ${!isCancelled ? `<button class="btn-ghost" style="color:#ef4444; border:1px solid rgba(239,68,68,0.3); padding:0.4rem 1rem; margin-left:1rem; font-size:0.9rem;" onclick="cancelBooking(${booking.id})">Cancel</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+
+            } catch (err) {
+                loader.innerHTML = '<span style="color:#ef4444;">Failed to load bookings</span>';
+            }
+        }
+
+        async function cancelBooking(id) {
+            if (confirm("Are you sure you want to cancel this booking?")) {
+                try {
+                    await window.api.cancelBooking(id);
+                    loadBookings(); // Reload list
+                } catch (e) {
+                    alert('Error cancelling booking: ' + e.message);
+                }
+            }
+        }
+
+        // --- Tabs and Favorites Logic ---
+        function switchTab(tab, element) {
+            // Update active state in sidebar
+            document.querySelectorAll('.menu-list li').forEach(li => li.classList.remove('active'));
+            if (element) element.classList.add('active');
+
+            // Hide all containers
+            document.getElementById('bookingsContainer').style.display = 'none';
+            document.getElementById('favoritesContainer').style.display = 'none';
+            document.getElementById('loadingIndicator').style.display = 'block';
+
+            if (tab === 'bookings') {
+                document.getElementById('tabTitle').textContent = 'My Bookings';
+                document.getElementById('bookingsContainer').style.display = 'block';
+                loadBookings();
+            } else if (tab === 'favorites') {
+                document.getElementById('tabTitle').textContent = 'My Favorites';
+                document.getElementById('favoritesContainer').style.display = 'grid'; // because property-grid uses grid
+                loadFavorites();
+            }
+
+            // Update hash without scrolling
+            history.replaceState(null, null, 'profile.html#' + tab);
+        }
+
+        async function loadFavorites() {
+            const container = document.getElementById('favoritesContainer');
+            const loader = document.getElementById('loadingIndicator');
+
+            try {
+                const favIds = await window.api.getUserFavorites();
+                let rooms = await window.api.getRooms();
+
+                // Filter only favorited rooms
+                rooms = rooms.filter(r => favIds.includes(r.id));
+                loader.style.display = 'none';
+
+                if (rooms.length === 0) {
+                    container.style.display = 'block'; // Turn off grid temporarily for empty state
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:3rem; background:rgba(0,0,0,0.2); border-radius:16px; border:1px dashed var(--glass-border);">
+                            <ion-icon name="heart-dislike-outline" style="font-size:3rem; color:var(--text-secondary); margin-bottom:1rem;"></ion-icon>
+                            <h3>No favorites saved</h3>
+                            <p style="color:var(--text-secondary); margin-top:0.5rem; margin-bottom:1.5rem;">Click the heart icon on properties you love!</p>
+                            <button class="btn-primary" onclick="window.location.href='index.html'">Explore Stays</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.style.display = 'grid'; // Ensure grid is on
+                container.innerHTML = '';
+
+                rooms.forEach((prop, index) => {
+                    const cardNode = document.createElement('div');
+                    cardNode.className = 'property-card glass-panel';
+                    cardNode.style.animation = `fadeInUp 0.6s ease ${index * 0.1}s forwards`;
+                    cardNode.style.opacity = '0';
+
+                    cardNode.innerHTML = `
+                        <div class="card-img-wrapper" onclick="window.location.href='index.html'">
+                            <img src="${prop.imageUrl || 'https://images.unsplash.com/photo-1542314831-c53cd3816002'}" alt="${prop.title}" class="card-img">
+                            <button class="favorite-btn saved" onclick="removeFavProfile(event, this, ${prop.id})">
+                                <ion-icon name="heart"></ion-icon>
+                            </button>
+                        </div>
+                        <div class="card-content" onclick="window.location.href='index.html'">
+                            <div class="card-header">
+                                <h3 class="card-title">${prop.title}</h3>
+                                <div class="card-rating"><ion-icon name="star"></ion-icon> ${prop.rating || 'New'}</div>
+                            </div>
+                            <div class="card-location"><ion-icon name="location-outline"></ion-icon> ${prop.location}</div>
+                            <div class="card-footer">
+                                <div class="price">$${prop.price}<span>/night</span></div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(cardNode);
+                });
+            } catch (e) {
+                loader.innerHTML = '<span style="color:#ef4444;">Failed to load favorites</span>';
+            }
+        }
+
+        async function removeFavProfile(e, btnEle, roomId) {
+            e.stopPropagation(); // prevent nested clicks
+            try {
+                // Toggle it (which removes it)
+                await window.api.toggleFavorite(roomId);
+                // Reload grid
+                loadFavorites();
+            } catch (err) {
+                alert("Error removing favorite.");
+            }
+        }
+
+        // --- Handle URL Hash Routing on Load ---
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash === 'favorites') {
+                const favEl = document.querySelectorAll('.menu-list li')[1];
+                if (favEl) switchTab('favorites', favEl);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

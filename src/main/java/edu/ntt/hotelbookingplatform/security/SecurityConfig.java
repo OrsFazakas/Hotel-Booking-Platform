@@ -21,7 +21,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -34,9 +34,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/api-docs/**",
-                                "/swagger-resources/**",
-                                "/webjars/**"
+                                "/v3/api-docs/**",
+                                "/api-docs/**"
                         ).permitAll()
 
                         .requestMatchers("/api/auth/**").permitAll()
@@ -44,8 +43,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/user/").hasRole("Admin")
                         .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("Admin")
                         .requestMatchers(HttpMethod.PATCH, "/api/user/changeRole").hasRole("Admin")
-                        .requestMatchers(HttpMethod.GET, "/api/user/**")
-                        .hasAnyRole("Admin", "Customer")
+                        .requestMatchers(HttpMethod.PATCH, "/api/user/changeRole").hasRole("Admin")
+                        .requestMatchers(HttpMethod.PATCH, "/api/user/changeName").hasAnyRole("Admin", "Customer")
+                        .requestMatchers(HttpMethod.PATCH, "/api/user/changePassword").hasAnyRole("Admin", "Customer")
+                        .requestMatchers(HttpMethod.GET, "/api/user/**").hasAnyRole("Admin", "Customer")
 
 
 

@@ -1,4 +1,4 @@
-package edu.ntt.hotelbookingplatform.exception;
+package edu.ntt.hotelbookingplatform.exception.user;
 
 public class UserAlreadyExistsException extends RuntimeException {
     public UserAlreadyExistsException(String email) {
