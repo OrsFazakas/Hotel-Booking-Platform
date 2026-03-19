@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxeStays | Premium Hotel Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+    <nav class="navbar align-center">
+        <div class="logo" style="cursor: pointer;" onclick="window.scrollTo(0, 0)">
+            <ion-icon name="bed"></ion-icon>
+            <h2>LuxeStays</h2>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active" onclick="window.scrollTo(0,0); return false;">Home</a>
+            <a href="#destinations"
+                onclick="document.getElementById('destinations').scrollIntoView({behavior: 'smooth'}); return false;">Destinations</a>
+            <a href="profile.html">Bookings</a>
+            <a href="profile.html#favorites">Favorites</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="btn-ghost" onclick="window.location.href='login.html'">Log In</button>
+            <button class="btn-primary" onclick="window.location.href='login.html'">Sign Up</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Discover your next <span>extraordinary</span> stay</h1>
+            <p>Experience world-class luxury and comfort in handpicked destinations.</p>
+
+            <div class="search-bar glass-panel">
+                <div class="search-input">
+                    <label>Where to?</label>
+                    <input type="text" placeholder="e.g. Paris, Tokyo">
+                </div>
+                <div class="divider"></div>
+                <div class="search-input">
+                    <label>Check-in</label>
+                    <input type="date">
+                </div>
+                <div class="divider"></div>
+                <div class="search-input">
+                    <label>Check-out</label>
+                    <input type="date">
+                </div>
+                <div class="divider"></div>
+                <div class="search-input">
+                    <label>Guests</label>
+                    <input type="number" value="2" min="1">
+                </div>
+                <button class="btn-search" id="searchBtn">
+                    <ion-icon name="search"></ion-icon>
+                </button>
+            </div>
+        </div>
+        <div class="hero-pattern"></div>
+    </header>
+
+    <main class="container">
+        <section class="section-recommended" id="destinations">
+            <div class="section-header">
+                <h2>Trending Destinations</h2>
+                <div class="filters" id="propertyFilters">
+                    <button class="filter-btn active" data-type="all">All</button>
+                    <button class="filter-btn" data-type="villa">Villas</button>
+                    <button class="filter-btn" data-type="apartment">Apartments</button>
+                    <button class="filter-btn" data-type="resort">Resorts</button>
+                </div>
+            </div>
+
+            <div class="property-grid" id="propertyGrid">
+                <!-- Data will be populated here via JS -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="brand-col">
+                <div class="logo">
+                    <ion-icon name="bed"></ion-icon>
+                    <h2>LuxeStays</h2>
+                </div>
+                <p>Curating the world's finest accommodations since 2026.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
