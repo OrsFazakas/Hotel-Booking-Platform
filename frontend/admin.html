@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | LuxeStays</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        .admin-layout {
+            padding-top: 6rem;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--accent-primary);
+        }
+
+        .stat-info h4 {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .stat-info h2 {
+            font-size: 2rem;
+            margin-top: 0.2rem;
+        }
+
+        .table-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 1rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-bottom: 1px solid var(--glass-border);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: var(--accent-primary);
+        }
+
+        .action-btn.delete:hover {
+            background: #ef4444;
+        }
+
+        /* Form Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar align-center">
+        <div class="logo">
+            <ion-icon name="bed"></ion-icon>
+            <h2>LuxeStays Control</h2>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">View Site</a>
+        </div>
+        <div class="auth-buttons"></div>
+    </nav>
+
+    <div class="container admin-layout">
+        <div class="admin-header">
+            <div>
+                <h1 style="font-size:2.5rem;">Dashboard Overview</h1>
+                <p style="color:var(--text-secondary);">Manage properties, users, and bookings.</p>
+            </div>
+            <button class="btn-primary" onclick="openRoomModal()"><ion-icon name="add"></ion-icon> Add New Room</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><ion-icon name="business-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h4>Total Properties</h4>
+                    <h2 id="statRooms">-</h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #10b981; background: rgba(16,185,129,0.1);"><ion-icon
+                        name="calendar-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h4>Total Bookings</h4>
+                    <h2 id="statBookings">-</h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #3b82f6; background: rgba(59,130,246,0.1);"><ion-icon
+                        name="people-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h4>Registered Users</h4>
+                    <h2 id="statUsers">-</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <h2 style="margin-bottom:1.5rem;">Property Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Property Name</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="roomsTableBody">
+                    <tr>
+                        <td colspan="6" style="text-align:center;">Loading data...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room Form Modal -->
+    <div class="modal-overlay" id="roomModal">
+        <div class="modal-content">
+            <h2 id="modalTitle" style="margin-bottom:2rem;">Add New Room</h2>
+            <form id="roomForm">
+                <input type="hidden" id="roomIdInput">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="rTitle" required>
+                </div>
+                <div style="display:flex; gap:1rem;">
+                    <div class="form-group" style="flex:1;">
+                        <label>Type</label>
+                        <select id="rType" required>
+                            <option value="Villa">Villa</option>
+                            <option value="Resort">Resort</option>
+                            <option value="Apartment">Apartment</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label>Price / Night</label>
+                        <input type="number" id="rPrice" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="rLocation" required>
+                </div>
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="number" id="rCapacity" required min="1">
+                </div>
+                <div class="form-group" style="margin-bottom:2rem;">
+                    <label>Image URL (Optional)</label>
+                    <input type="text" id="rImage" placeholder="https://...">
+                </div>
+
+                <div style="display:flex; gap:1rem;">
+                    <button type="button" class="btn-ghost" style="flex:1; border:1px solid var(--glass-border);"
+                        onclick="closeRoomModal()">Cancel</button>
+                    <button type="submit" class="btn-primary" style="flex:1;" id="saveRoomBtn">Save Room</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!window.api.requireAdmin()) return;
+            await loadAdminData();
+        });
+
+        async function loadAdminData() {
+            // Stats
+            const rooms = await window.api.getRooms();
+            const bookings = JSON.parse(localStorage.getItem('luxestays_bookings') || '[]');
+            const users = JSON.parse(localStorage.getItem('luxestays_users') || '[]');
+
+            document.getElementById('statRooms').textContent = rooms.length;
+            document.getElementById('statBookings').textContent = bookings.length;
+            document.getElementById('statUsers').textContent = users.length;
+
+            // Table
+            const tbody = document.getElementById('roomsTableBody');
+            tbody.innerHTML = '';
+
+            rooms.forEach(room => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="color:var(--text-secondary)">#${room.id}</td>
+                        <td style="font-weight:500;">
+                            <div style="display:flex; align-items:center; gap:1rem;">
+                                <img src="${room.imageUrl}" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">
+                                ${room.title}
+                            </div>
+                        </td>
+                        <td>${room.location}</td>
+                        <td><span style="background:rgba(255,255,255,0.1); padding:0.2rem 0.6rem; border-radius:4px; font-size:0.8rem;">${room.type}</span></td>
+                        <td>$${room.price}</td>
+                        <td>
+                            <button class="action-btn" onclick="openRoomModal(${room.id})" title="Edit"><ion-icon name="create-outline"></ion-icon></button>
+                            <button class="action-btn delete" onclick="deleteRoom(${room.id})" title="Delete"><ion-icon name="trash-outline"></ion-icon></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function deleteRoom(id) {
+            if (confirm("Are you sure you want to delete room #" + id + "?")) {
+                await window.api.deleteRoom(id);
+                loadAdminData();
+            }
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('roomModal');
+
+        async function openRoomModal(id = null) {
+            modal.style.display = 'flex';
+            const form = document.getElementById('roomForm');
+            form.reset();
+            document.getElementById('roomIdInput').value = '';
+
+            if (id) {
+                document.getElementById('modalTitle').textContent = 'Edit Room';
+                const room = await window.api.getRoomById(id);
+                if (room) {
+                    document.getElementById('roomIdInput').value = room.id;
+                    document.getElementById('rTitle').value = room.title;
+                    document.getElementById('rType').value = room.type;
+                    document.getElementById('rPrice').value = room.price;
+                    document.getElementById('rLocation').value = room.location;
+                    document.getElementById('rCapacity').value = room.capacity;
+                    document.getElementById('rImage').value = room.imageUrl || '';
+                }
+            } else {
+                document.getElementById('modalTitle').textContent = 'Add New Room';
+            }
+        }
+
+        function closeRoomModal() {
+            modal.style.display = 'none';
+        }
+
+        document.getElementById('roomForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('saveRoomBtn');
+            btn.innerHTML = 'Saving...'; btn.disabled = true;
+
+            const id = document.getElementById('roomIdInput').value;
+            const data = {
+                title: document.getElementById('rTitle').value,
+                type: document.getElementById('rType').value,
+                price: parseFloat(document.getElementById('rPrice').value),
+                location: document.getElementById('rLocation').value,
+                capacity: parseInt(document.getElementById('rCapacity').value),
+                imageUrl: document.getElementById('rImage').value || 'https://images.unsplash.com/photo-1542314831-c53cd3816002',
+                rating: id ? undefined : 0 // New rooms start at 0 rating
+            };
+
+            try {
+                if (id) {
+                    await window.api.updateRoom(id, data);
+                } else {
+                    await window.api.createRoom(data);
+                }
+                closeRoomModal();
+                loadAdminData();
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                btn.innerHTML = 'Save Room'; btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
