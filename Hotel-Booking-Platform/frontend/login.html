@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | LuxeStays</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .auth-card {
+            display: flex;
+            width: 100%;
+            max-width: 900px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-form-section {
+            flex: 1;
+            padding: 4rem;
+            min-width: 400px;
+        }
+
+        .auth-banner {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(217, 70, 239, 0.8)), url('https://images.unsplash.com/photo-1542314831-c53cd3816002?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+            color: white;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .auth-switch a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        #registerForm {
+            display: none;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        @media (max-width: 800px) {
+            .auth-card {
+                flex-direction: column;
+            }
+
+            .auth-banner {
+                display: none;
+            }
+
+            .auth-form-section {
+                padding: 2rem;
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container">
+        <!-- Background Effects -->
+        <div
+            style="position:absolute; top:-20%; left:-10%; width:50%; height:50%; background:radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%); z-index:-1;">
+        </div>
+
+        <div class="auth-card">
+            <div class="auth-form-section">
+                <a href="index.html" class="logo" style="margin-bottom: 3rem; display:inline-flex;">
+                    <ion-icon name="bed"></ion-icon>
+                    <h2>LuxeStays</h2>
+                </a>
+
+                <!-- LOGIN FORM -->
+                <div id="loginSection">
+                    <h1 class="form-title">Welcome back</h1>
+                    <p class="form-subtitle">Enter your credentials to access your account.</p>
+
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="loginEmail" required placeholder="admin@luxestays.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="loginPassword" required placeholder="password123">
+                        </div>
+                        <div id="loginError" class="error-msg"></div>
+                        <button type="submit" class="btn-primary btn-full" id="loginBtn">Log In</button>
+                    </form>
+
+                    <div class="auth-switch">
+                        Don't have an account? <a onclick="toggleForms()">Sign up</a>
+                    </div>
+                </div>
+
+                <!-- REGISTER FORM -->
+                <div id="registerSection" style="display:none;">
+                    <h1 class="form-title">Create account</h1>
+                    <p class="form-subtitle">Join us to start booking luxury stays.</p>
+
+                    <form id="registerForm" style="display:block;">
+                        <div style="display:flex; gap:1rem;">
+                            <div class="form-group" style="flex:1;">
+                                <label>First Name</label>
+                                <input type="text" id="regFirst" required>
+                            </div>
+                            <div class="form-group" style="flex:1;">
+                                <label>Last Name</label>
+                                <input type="text" id="regLast" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="regEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="regPassword" required>
+                        </div>
+                        <div id="regError" class="error-msg"></div>
+                        <button type="submit" class="btn-primary btn-full" id="regBtn">Create Account</button>
+                    </form>
+
+                    <div class="auth-switch">
+                        Already have an account? <a onclick="toggleForms()">Log in</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="auth-banner">
+                <h2 style="font-size: 3rem; margin-bottom: 1rem;">Experience the extraordinary.</h2>
+                <p style="font-size: 1.2rem; opacity: 0.9;">Book your next luxury stay with confidence.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        // Redirect if already logged in
+        if (window.api.getCurrentUser()) {
+            window.location.href = 'index.html';
+        }
+
+        function toggleForms() {
+            const login = document.getElementById('loginSection');
+            const reg = document.getElementById('registerSection');
+            if (login.style.display === 'none') {
+                login.style.display = 'block';
+                reg.style.display = 'none';
+            } else {
+                login.style.display = 'none';
+                reg.style.display = 'block';
+            }
+        }
+
+        // Login Logic
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const errorBox = document.getElementById('loginError');
+
+            errorBox.style.display = 'none';
+            btn.innerHTML = 'Logging in...';
+            btn.disabled = true;
+
+            try {
+                const res = await window.api.login(email, pass);
+                window.location.href = 'index.html'; // Redirect
+            } catch (err) {
+                errorBox.textContent = err.message;
+                errorBox.style.display = 'block';
+                btn.innerHTML = 'Log In';
+                btn.disabled = false;
+            }
+        });
+
+        // Registration Logic
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const first = document.getElementById('regFirst').value;
+            const last = document.getElementById('regLast').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const btn = document.getElementById('regBtn');
+            const errorBox = document.getElementById('regError');
+
+            errorBox.style.display = 'none';
+            btn.innerHTML = 'Creating...';
+            btn.disabled = true;
+
+            try {
+                await window.api.register({ firstName: first, lastName: last, email, password });
+
+                // Auto login after registration
+                await window.api.login(email, password);
+                window.location.href = 'index.html';
+            } catch (err) {
+                errorBox.textContent = err.message;
+                errorBox.style.display = 'block';
+                btn.innerHTML = 'Create Account';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
