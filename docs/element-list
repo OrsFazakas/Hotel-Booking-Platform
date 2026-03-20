@@ -1,0 +1,14 @@
+edu.ntt.hotelbookingplatform
+edu.ntt.hotelbookingplatform.controller
+edu.ntt.hotelbookingplatform.dto.in
+edu.ntt.hotelbookingplatform.dto.mapper
+edu.ntt.hotelbookingplatform.dto.out
+edu.ntt.hotelbookingplatform.exception
+edu.ntt.hotelbookingplatform.exception.advice.user
+edu.ntt.hotelbookingplatform.exception.handler
+edu.ntt.hotelbookingplatform.exception.user
+edu.ntt.hotelbookingplatform.model
+edu.ntt.hotelbookingplatform.repository
+edu.ntt.hotelbookingplatform.security
+edu.ntt.hotelbookingplatform.service
+edu.ntt.hotelbookingplatform.service.interfaces
