@@ -226,6 +226,11 @@
             window.location.href = 'index.html';
         }
 
+        if (window.location.hash === '#signup') {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('registerSection').style.display = 'block';
+        }
+
         function toggleForms() {
             const login = document.getElementById('loginSection');
             const reg = document.getElementById('registerSection');
