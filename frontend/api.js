@@ -343,7 +343,7 @@ function updateNavbar() {
     } else {
         authButtons.innerHTML = `
             <button class="btn-ghost" onclick="window.location.href='login.html'">Log In</button>
-            <button class="btn-primary" onclick="window.location.href='login.html'">Sign Up</button>
+            <button class="btn-primary" onclick="window.location.href='login.html#signup'">Sign Up</button>
         `;
     }
 }
