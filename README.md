@@ -1,29 +1,62 @@
-Hotel Booking Platform Backend
+# 🏨 LuxeStays - Premium Hotel Booking Platform
 
-Project Overview
-This is a 3-week team project focused on building a Java + Spring Boot backend for a hotel booking platform. The goal is to simulate real-world development practices, including REST API design, relational database management, and collaborative Git-flow.
+LuxeStays is a comprehensive Full-Stack hotel management application. It allows guests to browse and book luxury stays while providing administrators with powerful tools to track hotel revenue, occupancy, and guest arrivals.
 
-Tech Stack
-- Backend: Java + Spring Boot 
-- Database: Relational (PostgreSQL or MySQL) 
-- Documentation: Swagger and/or Postman 
-- Security: Basic or JWT Authentication
+## 🚀 Tech Stack
+* **Backend:** Java 17, Spring Boot 4.0.3
+* **Database:** PostgreSQL 15 (Dockerized)
+* **Security:** JWT-based authentication and BCrypt password encoding
+* **Frontend:** Modern HTML5, CSS3 (Glassmorphism design), and Vanilla JavaScript
+* **Documentation:** Swagger UI (OpenAPI 3.0) and JavaDoc
+* **Testing:** JUnit 5 and Mockito
 
-Git-Flow & Rules
-To ensure code quality and stability, we follow these mandatory rules:
-- Main Branch: Stable production-ready code.
-- Develop Branch: Integration branch for all features.
-- Feature Branches: Every task must be developed on a separate feature/<task-name> branch.
-- Pull Requests: No direct pushes to main or develop. Use Pull Requests only.
-- Code Review: At least one peer review is required before merging any PR.
+## 🛠️ Key Features
 
-Core Features
-1. User Management: Registration, login, and profile editing with Roles (Customer, Admin).
-2. Room Management: CRUD operations for rooms, pricing, and types (Single, Double, Suite, etc.).
-3. Booking Management: Create and cancel bookings with automated availability checks.
-4. Availability Search: Search and filter free rooms by date range, type, or capacity.
+### 👤 Customer Features
+* **Secure Authentication:** JWT-protected registration and login system.
+* **Smart Room Search:** Filter rooms by date availability, capacity, and type (Villa, Resort, Apartment).
+* **Booking Management:** Create bookings with automatic price calculation and automated overlap protection.
+* **Personal Profile:** Manage active bookings and maintain a personalized "Favorites" list.
 
-Project Timeline
-- Week 1: Setup, Planning, API design, DB modeling, and Authentication.
-- Week 2: Core Development (Booking logic, Search, Swagger documentation).
-- Week 3: Finalization (Bug fixes, Readme, and Git history cleanup).
+### 👑 Admin Features
+* **Room Management:** Full CRUD operations for managing hotel properties.
+* **Financial Insights:** Calculate total revenue for specific periods using high-precision **BigDecimal**.
+* **Occupancy Reports:** Real-time statistics on room utilization rates.
+* **Arrival Tracking:** Daily logs of confirmed guest arrivals for efficient front-desk management.
+
+## 🧪 Quality Assurance
+The project maintains high code reliability through extensive Unit Testing across all layers:
+* **Auth & User:** Validates secure login flows and password update logic.
+* **Booking Logic:** Ensures zero-overlap in reservations and correct financial billing.
+* **Room Services:** Tests CRUD integrity and filtering accuracy.
+
+## 📖 Documentation
+* **Interactive API (Swagger):** Available at `http://localhost:8080/swagger-ui.html` during runtime.
+* **Technical JavaDoc:** Detailed class and method documentation can be found in the `docs/index.html` directory.
+
+## 💻 Installation & Running
+
+### 1. Database Setup
+Ensure Docker is running, then launch the database container:
+
+```bash
+docker-compose up -d
+```
+
+*The database is accessible on **localhost:5433** as configured in application.properties.*
+
+### 2. Launch Backend
+Run the Spring Boot application using Maven:
+
+```bash
+mvn spring-boot:run
+```
+
+### 3. Launch Frontend
+The frontend files are located in the `/frontend` directory.
+* Open `index.html` using a local server (e.g., VS Code Live Server at `http://127.0.0.1:5500`).
+* **Note:** CORS is pre-configured to allow requests from this local address.
+
+---
+**Developed by:** Team 9  
+**Date:** March 20, 2026
