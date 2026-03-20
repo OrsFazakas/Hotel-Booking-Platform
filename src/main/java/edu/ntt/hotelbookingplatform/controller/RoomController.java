@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rooms/")
+@RequestMapping("/api/rooms")
 @Validated
 public class RoomController {
 

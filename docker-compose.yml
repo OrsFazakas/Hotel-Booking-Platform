@@ -8,11 +8,11 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: hotel_booking
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   adminer:
     image: adminer
     container_name: db_gui
     restart: always
     ports:
-      - "8081:8081"
+      - "8081:8080"
